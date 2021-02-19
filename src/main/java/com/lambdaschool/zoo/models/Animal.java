@@ -6,15 +6,18 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal{
+@Entity
+@Table(name="animals")
+public class Animal extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long animalid;
     private String animaltype;
 
     @OneToMany( mappedBy = "animal", cascade= CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value="zoos", allowSetters=true)
+    @JsonIgnoreProperties(value="animal", allowSetters=true)
     private List<ZooAnimals> zoos = new ArrayList<>();
+
 
     public Animal() {
     }
@@ -24,6 +27,7 @@ public class Animal{
         this.animaltype = animaltype;
         this.zoos = zoos;
     }
+
 
     public long getAnimalid() {
         return animalid;

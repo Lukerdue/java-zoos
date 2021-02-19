@@ -4,30 +4,41 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name="zooanimals")
 @IdClass(ZooAnimalsId.class)
-public class ZooAnimals implements Serializable {
+public class ZooAnimals extends Auditable implements Serializable {
+
     @Id
-    @OneToMany
-    @JoinColumn(name="animalid")
+    @ManyToOne
+    @JoinColumn(name = "animalid")
     @JsonIgnoreProperties(value = "zoos", allowSetters = true)
     private Animal animal;
 
     @Id
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="zooid")
     @JsonIgnoreProperties(value="animals", allowSetters = true)
     private Zoo zoo;
 
+    private String incomingzoo;
+
     public ZooAnimals() {
     }
 
-    public ZooAnimals(Animal animal, Zoo zoo) {
+    public ZooAnimals(Animal animal, Zoo zoo, String inczoo) {
         this.animal = animal;
         this.zoo = zoo;
+        this.incomingzoo = inczoo;
+    }
+
+    public String getIncomingzoo() {
+        return incomingzoo;
+    }
+
+    public void setIncomingzoo(String incomingzoo) {
+        this.incomingzoo = incomingzoo;
     }
 
     public Animal getAnimal() {

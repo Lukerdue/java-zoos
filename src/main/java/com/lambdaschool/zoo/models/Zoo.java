@@ -6,17 +6,20 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zoo {
+@Entity
+@Table(name="zoos")
+public class Zoo extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long zooid;
     private String zooname;
 
     @OneToMany(mappedBy = "zoo")
+    @JsonIgnoreProperties(value="zoo")
     private List<Telephone> phones = new ArrayList<>();
 
     @OneToMany(mappedBy="zoo", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value="zoos")
+    @JsonIgnoreProperties(value="zoo")
     private List<ZooAnimals> animals = new ArrayList<>();
 
     public Zoo() {
@@ -59,5 +62,15 @@ public class Zoo {
 
     public void setAnimals(List<ZooAnimals> animals) {
         this.animals = animals;
+    }
+
+    @Override
+    public String toString() {
+        return "Zoo{" +
+                "zooid=" + zooid +
+                ", zooname='" + zooname + '\'' +
+                ", phones=" + phones +
+                ", animals=" + animals +
+                '}';
     }
 }
